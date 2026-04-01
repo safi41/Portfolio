@@ -17,7 +17,7 @@
   <title>Sufian | Portfolio</title>
   <link rel="manifest" href="manifest.json">
 
-  <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.8/dist/dotlottie-wc.js" type="module"></script>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
   <style>
     body {
@@ -44,12 +44,13 @@
 <body>
 
 <div id="loading-container">
-  <dotlottie-wc
-          src="https://lottie.host/e1a22a19-716a-46ad-8031-990e8fd375b4/nKcen2JqGU.lottie"
-          style="width: 300px; height: 300px"
-          autoplay
-          loop>
-  </dotlottie-wc>
+  <lottie-player
+          src="animation.json"  background="transparent"
+          speed="1"
+          style="width: 300px; height: 300px;"
+          loop
+          autoplay>
+  </lottie-player>
 </div>
 
 <script>
@@ -71,41 +72,3 @@
 <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
-<!--<!DOCTYPE html>-->
-<!--<html>-->
-<!--<head>-->
-<!--  &lt;!&ndash;-->
-<!--    If you are serving your web app in a path other than the root, change the-->
-<!--    href value below to reflect the base path you are serving from.-->
-
-<!--    The path provided below has to start and end with a slash "/" in order for-->
-<!--    it to work correctly.-->
-
-<!--    For more details:-->
-<!--    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base-->
-
-<!--    This is a placeholder for base href that will be replaced by the value of-->
-<!--    the `&#45;&#45;base-href` argument provided to `flutter build`.-->
-<!--  &ndash;&gt;-->
-<!--  <base href="$FLUTTER_BASE_HREF">-->
-
-<!--  <meta charset="UTF-8">-->
-<!--  <meta content="IE=Edge" http-equiv="X-UA-Compatible">-->
-<!--  <meta name="description" content="porfolio website in flutter">-->
-
-<!--  &lt;!&ndash; iOS meta tags & icons &ndash;&gt;-->
-<!--  <meta name="mobile-web-app-capable" content="yes">-->
-<!--  <meta name="apple-mobile-web-app-status-bar-style" content="black">-->
-<!--  <meta name="apple-mobile-web-app-title" content="porfolio">-->
-<!--  <link rel="apple-touch-icon" href="icons/Icon-192.png">-->
-
-<!--  &lt;!&ndash; Favicon &ndash;&gt;-->
-<!--  <link rel="icon" type="image/png" href="favicon.png"/>-->
-
-<!--  <title>porfolio</title>-->
-<!--  <link rel="manifest" href="manifest.json">-->
-<!--</head>-->
-<!--<body>-->
-<!--  <script src="flutter_bootstrap.js" async></script>-->
-<!--</body>-->
-<!--</html>-->
