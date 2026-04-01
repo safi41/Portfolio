@@ -302,7 +302,11 @@ class AppTheme {
         onSecondary: Colors.white,
         onSurface: textBlack, // Ensures default text is dark
       ),
-
+      scrollbarTheme: const ScrollbarThemeData(
+        thumbVisibility: WidgetStatePropertyAll(false), // Hides the thumb
+        trackVisibility: WidgetStatePropertyAll(false), // Hides the track
+        thickness: WidgetStatePropertyAll(0),           // Sets width to zero
+      ),
       appBarTheme: const AppBarTheme(
         backgroundColor: darkBackground,
         foregroundColor: Colors.white,
@@ -343,7 +347,11 @@ class AppTheme {
       brightness: Brightness.dark,
       primaryColor: primaryOrange,
       scaffoldBackgroundColor: deepBackground,
-
+      scrollbarTheme: const ScrollbarThemeData(
+        thumbVisibility: WidgetStatePropertyAll(false), // Hides the thumb
+        trackVisibility: WidgetStatePropertyAll(false), // Hides the track
+        thickness: WidgetStatePropertyAll(0),           // Sets width to zero
+      ),
       colorScheme: const ColorScheme.dark(
         primary: primaryOrange,
         secondary: surfaceDark,

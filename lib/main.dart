@@ -27,6 +27,12 @@ class MyApp extends ConsumerWidget {
 
       // 3. Dynamically switch based on the Riverpod state
       themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      builder: (context, child) {
+        return ScrollConfiguration(
+          behavior: const ScrollBehavior().copyWith(scrollbars: false),
+          child: child!,
+        );
+      },
 
       home: const PortfolioHeroPage(),
     );
