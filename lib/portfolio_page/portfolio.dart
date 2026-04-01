@@ -252,11 +252,11 @@ class _ConsumerPortfolioHeroPageState extends ConsumerState<PortfolioHeroPage> {
                                             decoration: BoxDecoration(
                                               border: Border.all(color: Colors.black12),
                                               borderRadius: BorderRadius.circular(20),
-                                              color: Colors.white.withValues(alpha: 0.9),
+                                              color: colorScheme.secondary.withValues(alpha: 0.9),
                                             ),
-                                            child: const Text(
+                                            child:  Text(
                                               "Hello!",
-                                              style: TextStyle(fontWeight: FontWeight.w600),
+                                              style: TextStyle(fontWeight: FontWeight.w600,color:colorScheme.onSecondary),
                                             ),
                                           ),
                                           Positioned(
@@ -284,12 +284,17 @@ class _ConsumerPortfolioHeroPageState extends ConsumerState<PortfolioHeroPage> {
                                                 letterSpacing: -1,
                                               ),
                                               children: [
-                                                const TextSpan(text: "I'm "),
+                                                TextSpan(text: "I'm ",
+                                                  style: TextStyle(color: colorScheme.onSurface),
+                                                ),
                                                 TextSpan(
                                                   text: "Sufian,\n",
                                                   style: TextStyle(color: colorScheme.primary),
                                                 ),
-                                                const TextSpan(text: "Flutter Developer"),
+                                                 TextSpan(text: "Flutter Developer",
+                                                  style: TextStyle(color: colorScheme.onSurface),
+
+                                                ),
                                               ],
                                             ),
                                           ),

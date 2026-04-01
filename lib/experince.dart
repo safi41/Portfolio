@@ -8,7 +8,9 @@ class WorkExperienceSection extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    // Timeline Data
+    // 1. Detect if the screen is mobile
+    final isMobile = MediaQuery.of(context).size.width < 800;
+
     // Timeline Data
     final List<Map<String, dynamic>> experiences = [
       {
@@ -36,30 +38,36 @@ class WorkExperienceSection extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 80,horizontal: 70),
+      // 2. Reduce horizontal padding on mobile so it doesn't squish the content
+      padding: EdgeInsets.symmetric(
+          vertical: isMobile ? 50 : 80,
+          horizontal: isMobile ? 20 : 70
+      ),
       color: colorScheme.surface,
       child: Column(
         children: [
-          // 1. Section Header
+          // Section Header
           RichText(
+            textAlign: TextAlign.center,
             text: TextSpan(
               style: theme.textTheme.displayMedium?.copyWith(
                 fontWeight: FontWeight.bold,
-                fontSize: 48,
-                color: colorScheme.onSurface, // Dark color for "My"
+                // 3. Scale down the header text on mobile
+                fontSize: isMobile ? 36 : 48,
+                color: colorScheme.onSurface,
               ),
               children: [
-                const TextSpan(text: "My "),
+                const TextSpan(text: "My\n"), // Added line break for mobile safety
                 TextSpan(
                   text: "Work Experience",
-                  style: TextStyle(color: colorScheme.primary), // Orange
+                  style: TextStyle(color: colorScheme.primary),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 80),
+          SizedBox(height: isMobile ? 50 : 80),
 
-          // 2. Timeline List
+          // Timeline List
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -68,118 +76,165 @@ class WorkExperienceSection extends StatelessWidget {
               final exp = experiences[index];
               final isLast = index == experiences.length - 1;
 
-              return IntrinsicHeight(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // --- Left Side (Company & Date) ---
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 30, bottom: 50),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start, // Align to left edge like the Figma mockup
-                          children: [
-                            Text(
-                              exp["company"],
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                color: colorScheme.onSurface,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              exp["date"],
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: colorScheme.onSurface.withValues(alpha: 0.5),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    // --- Center Timeline Indicator ---
-                    SizedBox(
-                      width: 30,
-                      child: Column(
-                        children: [
-                          // The Circular Node
-                          Container(
-                            width: 24,
-                            height: 24,
-                            padding: const EdgeInsets.all(4), // Creates the white gap
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: colorScheme.onSurface.withValues(alpha: 0.3),
-                                width: 1.5,
-                              ),
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: exp["isHighlighted"]
-                                    ? colorScheme.primary
-                                    : colorScheme.onSurface.withValues(alpha: 0.8),
-                              ),
-                            ),
-                          ),
-                          // The Dashed Line
-                          if (!isLast)
-                            Expanded(
-                              child: CustomPaint(
-                                size: const Size(double.infinity, double.infinity),
-                                painter: DashedLinePainter(
-                                  color: colorScheme.onSurface.withValues(alpha: 0.3),
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-
-                    // --- Right Side (Role & Description) ---
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 30, bottom: 50),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              exp["role"],
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                color: colorScheme.onSurface,
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            Text(
-                              exp["desc"],
-                              style: TextStyle(
-                                fontSize: 15,
-                                height: 1.5,
-                                color: colorScheme.onSurface.withValues(alpha: 0.5),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
+              // 4. Render the appropriate layout based on screen size
+              if (isMobile) {
+                return _buildMobileRow(exp, isLast, colorScheme);
+              } else {
+                return _buildDesktopRow(exp, isLast, colorScheme);
+              }
             },
           ),
         ],
       ),
     );
   }
+
+  // --- DESKTOP LAYOUT (Original 3-Column Split) ---
+  Widget _buildDesktopRow(Map<String, dynamic> exp, bool isLast, ColorScheme colorScheme) {
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Left Side (Company & Date)
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 30, bottom: 50),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end, // Align to right near the timeline
+                children: [
+                  Text(
+                    exp["company"],
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: colorScheme.onSurface),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    exp["date"],
+                    style: TextStyle(fontSize: 16, color: colorScheme.onSurface.withValues(alpha: 0.5)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // Center Timeline Indicator
+          _buildTimelineNode(exp["isHighlighted"], isLast, colorScheme),
+
+          // Right Side (Role & Description)
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 30, bottom: 50),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    exp["role"],
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: colorScheme.onSurface),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    exp["desc"],
+                    style: TextStyle(fontSize: 15, height: 1.5, color: colorScheme.onSurface.withValues(alpha: 0.5)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // --- MOBILE LAYOUT (2-Column Stacked) ---
+  Widget _buildMobileRow(Map<String, dynamic> exp, bool isLast, ColorScheme colorScheme) {
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch, // Ensures the dashed line reaches the bottom
+        children: [
+          // Left Timeline Indicator
+          _buildTimelineNode(exp["isHighlighted"], isLast, colorScheme),
+
+          // Right Side Stacked Content
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, bottom: 40),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Company & Date
+                  Text(
+                    exp["company"],
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: colorScheme.onSurface),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    exp["date"],
+                    style: TextStyle(fontSize: 14, color: colorScheme.onSurface.withValues(alpha: 0.5)),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Role & Description
+                  Text(
+                    exp["role"],
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: colorScheme.primary),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    exp["desc"],
+                    style: TextStyle(fontSize: 14, height: 1.5, color: colorScheme.onSurface.withValues(alpha: 0.6)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // --- SHARED TIMELINE NODE ---
+  Widget _buildTimelineNode(bool isHighlighted, bool isLast, ColorScheme colorScheme) {
+    return SizedBox(
+      width: 30,
+      child: Column(
+        children: [
+          // The Circular Node
+          Container(
+            width: 24,
+            height: 24,
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: colorScheme.onSurface.withValues(alpha: 0.3),
+                width: 1.5,
+              ),
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isHighlighted
+                    ? colorScheme.primary
+                    : colorScheme.onSurface.withValues(alpha: 0.8),
+              ),
+            ),
+          ),
+          // The Dashed Line
+          if (!isLast)
+            Expanded(
+              child: CustomPaint(
+                size: const Size(double.infinity, double.infinity),
+                painter: DashedLinePainter(
+                  color: colorScheme.onSurface.withValues(alpha: 0.3),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
 }
 
-// Custom Painter to draw the perfectly spaced vertical dashed line
+// Custom Painter (remains unchanged)
 class DashedLinePainter extends CustomPainter {
   final Color color;
 
