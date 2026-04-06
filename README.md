@@ -1,16 +1,22 @@
-# porfolio
+Modern Flutter Portfolio
+A sleek, responsive portfolio website built with Flutter, featuring dynamic themes, custom animations, and clean architecture.
 
-porfolio website in flutter
+Key Features
+Dynamic Theme Switching: Fully integrated Dark and Light mode support.
 
-## Getting Started
+State Management: Efficient UI state handling for theme persistence and interactive elements.
 
-This project is a starting point for a Flutter application.
+Custom Animations: Smooth, hand-crafted transitions and hover effects to enhance user experience.
 
-A few resources to get you started if this is your first Flutter project:
+Theme Color System: A centralized, scalable theme class for consistent branding across the entire app.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Project Showcases: A dedicated section for listing professional projects with clean UI cards.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Tech Stack
+Framework: Flutter (Web & Mobile)
+
+Language: Dart
+
+State Management: (e.g., Provider / Riverpod / Bloc) — Update this to the one you used
+
+Architecture: Clean, modular structure with a dedicated theme layer.
